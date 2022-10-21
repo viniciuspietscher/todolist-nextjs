@@ -5,8 +5,8 @@ export default async function getTodoLists(req, res) {
   try {
     await connectDB()
     const lists = await List.find({ deleted: false }).sort({ _id: "desc" }) //get not deleted lists and sort by newest first
-    res.json(lists)
+    res.status(200).json({ lists })
   } catch (error) {
-    res.json({ msg: error })
+    res.status(400).json({ error })
   }
 }

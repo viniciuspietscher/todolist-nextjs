@@ -17,8 +17,8 @@ export default async function addTodoList(req, res) {
       return
     }
     const list = await List.create(req.body)
-    res.json(list)
+    res.status(200).json({ list })
   } catch (error) {
-    res.json({ msg: error })
+    res.status(400).json({ msg: error })
   }
 }

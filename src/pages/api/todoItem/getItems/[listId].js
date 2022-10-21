@@ -14,8 +14,8 @@ export default async function getTodoItems(req, res) {
     const items = await Item.find({ listId: listId, deleted: false }).sort({
       _id: "desc",
     })
-    res.json(items)
+    res.status(200).json({ items })
   } catch (error) {
-    res.status(400).json({ msg: error })
+    res.status(400).json({ error })
   }
 }
