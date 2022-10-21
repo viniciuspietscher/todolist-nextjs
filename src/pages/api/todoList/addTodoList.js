@@ -13,7 +13,7 @@ export default async function addTodoList(req, res) {
     if (listExists) {
       res
         .status(400)
-        .json({ msg: "List already exists, provide a different name" })
+        .json({ msg: "Todo List already exists, provide a different name" })
       return
     }
     const list = await List.create(req.body)
