@@ -7,6 +7,6 @@ export default async function getTodoLists(req, res) {
     const lists = await List.find({ deleted: false }).sort({ _id: "desc" }) //get not deleted lists and sort by newest first
     res.json(lists)
   } catch (error) {
-    res.json({ msg: error.message })
+    res.json({ msg: error })
   }
 }
