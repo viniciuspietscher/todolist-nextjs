@@ -16,6 +16,6 @@ export default async function getTodoItems(req, res) {
     })
     res.json(items)
   } catch (error) {
-    res.json({ msg: error })
+    res.status(400).json({ msg: error })
   }
 }
