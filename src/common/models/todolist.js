@@ -1,6 +1,6 @@
-import { Schema, model, models } from "mongoose"
+import mongoose from "mongoose"
 
-const todoListSchema = new Schema({
+const todoListSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -15,6 +15,6 @@ const todoListSchema = new Schema({
   },
 })
 
-const List = models.List || model("List", todoListSchema)
+const List = mongoose.model("List", todoListSchema)
 
 export default List

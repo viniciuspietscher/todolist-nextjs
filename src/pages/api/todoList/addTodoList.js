@@ -6,15 +6,12 @@ export default async function addTodoList(req, res) {
   if (!name) {
     res.status(400).json({ msg: "Please provide a Todo List name" })
   }
+  // TODO: wrap everything on a try-catch block
   try {
-    // TODO: Do I need to connect to the DB at every request?
-    // Which file runs first on the server? can I run the connectDB only once like on NodeJS?
-
     await connectDB()
   } catch (error) {
     console.log(error)
   }
-  // TODO: Do I need to wrap every DB call on a try-catch block? Is there a better way to do this?
   try {
     const list = await List.findOne(req.body)
     if (list) {
