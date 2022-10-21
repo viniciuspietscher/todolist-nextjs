@@ -15,6 +15,6 @@ const todoListSchema = new mongoose.Schema({
   },
 })
 
-const List = mongoose.model("List", todoListSchema)
+const List = mongoose.models.List || mongoose.model("List", todoListSchema)
 
 export default List

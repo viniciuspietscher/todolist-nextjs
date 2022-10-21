@@ -1,13 +1,13 @@
-import { Schema, model, models, Types } from "mongoose"
+import mongoose from "mongoose"
 
-const todoItemSchema = new Schema({
+const todoItemSchema = new mongoose.Schema({
   listId: {
-    type: Types.ObjectId,
+    type: mongoose.Types.ObjectId,
     ref: "todoListSchema",
   },
   item: {
     type: String,
-    required: [true, "Todo Item must have a string"],
+    required: [true, "Item must not be empty"],
     trim: true,
     minLength: 2,
     maxLength: 100,
@@ -22,6 +22,6 @@ const todoItemSchema = new Schema({
   },
 })
 
-const Item = models.Item || model("Item", todoItemSchema)
+const Item = mongoose.models.Item || mongoose.model("Item", todoItemSchema)
 
 export default Item
