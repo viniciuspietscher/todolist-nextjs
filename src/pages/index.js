@@ -29,6 +29,9 @@ export default function Home({ lists }) {
 
   const handleAddTodoList = async (e) => {
     e.preventDefault()
+    if (!newTodoList || newTodoList.length < 2) {
+      return
+    }
     await axios
       .post("/api/todoList/addTodoList", {
         name: newTodoList,
@@ -47,16 +50,17 @@ export default function Home({ lists }) {
 
   return (
     <div className='container mx-auto'>
-      <h1 className='text-3xl text-gray-100 font-bold underline'>
+      <h1 className='text-3xl text-gray-100 font-bold underline mb-4 mt-4'>
         NextJS Todo List
       </h1>
       <form onSubmit={handleAddTodoList}>
         <div className='mb-4'>
-          <label className='text-gray-100' htmlFor='name'>
+          <label className='text-gray-100 mr-2' htmlFor='name'>
             New List:
           </label>
           <input
             value={newTodoList}
+            autoComplete='off'
             type='text'
             id='name'
             name='name'
@@ -64,7 +68,7 @@ export default function Home({ lists }) {
           />
         </div>
         <button
-          className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+          className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4'
           type='submit'
         >
           Add
@@ -73,7 +77,10 @@ export default function Home({ lists }) {
       <ul>
         {todoLists.map((doc) => {
           return (
-            <li className='text-gray-100' key={doc._id}>
+            <li
+              className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4 text-center'
+              key={doc._id}
+            >
               {doc.name}
             </li>
           )
