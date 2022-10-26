@@ -1,31 +1,82 @@
-import Head from "next/head"
-import Image from "next/image"
-import styles from "../styles/Home.module.css"
+import Link from "next/link"
+import { useState } from "react"
 import connectDB from "../lib/mongodb"
 import List from "../models/todolist"
+import axios from "axios"
 
 export async function getServerSideProps() {
-  await connectDB()
-  const result = await List.find({ deleted: false }).sort({ _id: "desc" })
-  const lists = result.map((doc) => {
-    const list = doc.toObject()
-    list._id = list._id.toString()
-    return list
-  })
-  return {
-    props: {
-      lists: lists,
-    },
+  try {
+    await connectDB()
+    const result = await List.find({ deleted: false }).sort({ _id: "desc" })
+    const lists = result.map((doc) => {
+      const list = doc.toObject()
+      list._id = list._id.toString()
+      return list
+    })
+    return {
+      props: {
+        lists: lists,
+      },
+    }
+  } catch (error) {
+    console.log(error)
   }
 }
 
 export default function Home({ lists }) {
+  const [newTodoList, setNewTodoList] = useState("")
+  const [todoLists, setTodoLists] = useState(lists)
+
+  const handleAddTodoList = async (e) => {
+    e.preventDefault()
+    await axios
+      .post("/api/todoList/addTodoList", {
+        name: newTodoList,
+      })
+      .then((response) => getData())
+      .catch((error) => console.log(error))
+    setNewTodoList("")
+  }
+
+  const getData = async () => {
+    await axios
+      .get("/api/todoList/getTodoLists")
+      .then((response) => setTodoLists(response.data.lists))
+      .catch((error) => console.log(error))
+  }
+
   return (
-    <div className={styles.container}>
-      <h2>hello world</h2>
+    <div className='container mx-auto'>
+      <h1 className='text-3xl text-gray-100 font-bold underline'>
+        NextJS Todo List
+      </h1>
+      <form onSubmit={handleAddTodoList}>
+        <div className='mb-4'>
+          <label className='text-gray-100' htmlFor='name'>
+            New List:
+          </label>
+          <input
+            value={newTodoList}
+            type='text'
+            id='name'
+            name='name'
+            onChange={(e) => setNewTodoList(e.target.value)}
+          />
+        </div>
+        <button
+          className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+          type='submit'
+        >
+          Add
+        </button>
+      </form>
       <ul>
-        {lists.map((doc) => {
-          return <li key={doc._id}>{doc.name}</li>
+        {todoLists.map((doc) => {
+          return (
+            <li className='text-gray-100' key={doc._id}>
+              {doc.name}
+            </li>
+          )
         })}
       </ul>
     </div>
