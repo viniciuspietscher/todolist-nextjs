@@ -104,8 +104,12 @@ export default function Home({ lists, items }) {
       .catch((error) => console.log(error))
   }
 
-  const handleComplete = async (itemId) => {
+  const handleComplete = async (itemId, listId) => {
     console.log("Complete Item", itemId)
+    await axios
+      .put(`/api/todoItem/updateItem/${itemId}`)
+      .then((response) => getItems(listId))
+      .catch((error) => console.log(error))
   }
 
   const handleDelete = async (itemId, listId) => {
@@ -215,7 +219,7 @@ export default function Home({ lists, items }) {
                     {doc.item}{" "}
                     <button
                       className='bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded'
-                      onClick={() => handleComplete(doc._id)}
+                      onClick={() => handleComplete(doc._id, doc.listId)}
                     >
                       complete
                     </button>
@@ -229,6 +233,7 @@ export default function Home({ lists, items }) {
                 )
               })}
             </ul>
+            <h2 className='text-gray-100 text-lg'>Completed</h2>
           </div>
         </div>
       </div>
