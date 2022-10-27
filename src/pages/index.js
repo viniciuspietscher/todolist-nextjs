@@ -119,17 +119,21 @@ export default function Home({ lists, items }) {
   }
 
   return (
-    <div className='container mx-auto border-2 border-indigo-500/100'>
+    <div className='container mx-auto'>
       <div className='flex flex-row'>
-        <div className='basis-1/3 border-2 border-red-500/100'>
-          <h1 className='text-center text-3xl text-gray-100 font-bold underline mb-4 mt-4'>
+        <div className='basis-1/3 h-80'>
+          <h1 className='text-center text-3xl text-gray-100 font-bold underline mb-4 mt-10'>
             NextJS Todo List
           </h1>
         </div>
-        <div className='basis-2/3 border-2 border-red-500/100'></div>
+        <div className='flex justify-center items-end mb-10 basis-2/3'>
+          <h2 className='text-center text-gray-100 text-3xl text-gray-100 font-bold underline'>
+            {selectedList ? selectedList.name : ""}
+          </h2>
+        </div>
       </div>
       <div className='flex flex-row'>
-        <div className='basis-1/3 border-2 border-green-500/100'>
+        <div className='basis-1/3'>
           <form
             className='flex flex-row items-center'
             onSubmit={handleAddTodoList}
@@ -139,6 +143,7 @@ export default function Home({ lists, items }) {
                 New List:
               </label>
               <input
+                className='ml-2'
                 value={newTodoList}
                 autoComplete='off'
                 type='text'
@@ -148,21 +153,16 @@ export default function Home({ lists, items }) {
               />
             </div>
             <button
-              className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+              className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-1'
               type='submit'
             >
               Add
             </button>
           </form>
         </div>
-        <div className='flex items-center justify-center basis-2/3 border-2 border-green-500/100'>
-          <h2 className='text-gray-100 text-lg'>
-            {selectedList ? selectedList.name : ""}
-          </h2>
-        </div>
       </div>
       <div className='flex flex-row'>
-        <div className='basis-1/3 border-2 border-white-500/100'>
+        <div className='basis-1/3'>
           <ul>
             {todoLists.map((doc) => {
               return (
@@ -181,8 +181,8 @@ export default function Home({ lists, items }) {
             })}
           </ul>
         </div>
-        <div className='flex justify-center basis-2/3 border-2 border-white-500/100'>
-          <div className='min-w-96 border-2 border-green-500/100'>
+        <div className='flex justify-center basis-2/3'>
+          <div className='min-w-96'>
             {selectedList ? (
               <form
                 className='flex items-center justify-between mb-4'
@@ -193,6 +193,7 @@ export default function Home({ lists, items }) {
                     New Item:
                   </label>
                   <input
+                    className='ml-2'
                     value={newTodoItem}
                     autoComplete='off'
                     type='text'
