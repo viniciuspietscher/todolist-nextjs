@@ -104,6 +104,17 @@ export default function Home({ lists, items }) {
       .catch((error) => console.log(error))
   }
 
+  const handleComplete = async (itemId) => {
+    console.log("Complete Item", itemId)
+  }
+
+  const handleDelete = async (itemId, listId) => {
+    await axios
+      .put(`/api/todoItem/deleteItem/${itemId}`)
+      .then((response) => getItems(listId))
+      .catch((error) => console.log(error))
+  }
+
   return (
     <div className='container mx-auto border-2 border-indigo-500/100'>
       <div className='flex flex-row'>
@@ -168,7 +179,7 @@ export default function Home({ lists, items }) {
           </ul>
         </div>
         <div className='flex justify-center basis-2/3 border-2 border-white-500/100'>
-          <div className='basis-1/3 border-2 border-green-500/100'>
+          <div className='border-2 border-green-500/100'>
             {selectedList ? (
               <form
                 className='flex flex-row items-center'
@@ -201,7 +212,19 @@ export default function Home({ lists, items }) {
               {todoItems.map((doc) => {
                 return (
                   <li className='text-gray-100' key={doc._id}>
-                    {doc.item}
+                    {doc.item}{" "}
+                    <button
+                      className='bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded'
+                      onClick={() => handleComplete(doc._id)}
+                    >
+                      complete
+                    </button>
+                    <button
+                      className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
+                      onClick={() => handleDelete(doc._id, doc.listId)}
+                    >
+                      Delete
+                    </button>
                   </li>
                 )
               })}
