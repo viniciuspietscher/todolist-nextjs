@@ -142,7 +142,7 @@ export default function Home({ lists, items }) {
           </form>
         </div>
         <div className='flex items-center justify-center basis-2/3 border-2 border-green-500/100'>
-          <h2 className='text-gray-100'>
+          <h2 className='text-gray-100 text-lg'>
             {selectedList ? selectedList.name : ""}
           </h2>
         </div>
@@ -167,30 +167,34 @@ export default function Home({ lists, items }) {
         </div>
         <div className='flex justify-center basis-2/3 border-2 border-white-500/100'>
           <div className='basis-1/3 border-2 border-green-500/100'>
-            <form
-              className='flex flex-row items-center'
-              onSubmit={handleAddTodoItem}
-            >
-              <div className='mx-auto'>
-                <label className='text-gray-100' htmlFor='name'>
-                  New Item:
-                </label>
-                <input
-                  value={newTodoItem}
-                  autoComplete='off'
-                  type='text'
-                  id='name'
-                  name='name'
-                  onChange={(e) => setNewTodoItem(e.target.value)}
-                />
-              </div>
-              <button
-                className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
-                type='submit'
+            {selectedList ? (
+              <form
+                className='flex flex-row items-center'
+                onSubmit={handleAddTodoItem}
               >
-                Add
-              </button>
-            </form>
+                <div className='mx-auto'>
+                  <label className='text-gray-100' htmlFor='name'>
+                    New Item:
+                  </label>
+                  <input
+                    value={newTodoItem}
+                    autoComplete='off'
+                    type='text'
+                    id='name'
+                    name='name'
+                    onChange={(e) => setNewTodoItem(e.target.value)}
+                  />
+                </div>
+                <button
+                  className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+                  type='submit'
+                >
+                  Add
+                </button>
+              </form>
+            ) : (
+              ""
+            )}
             <ul>
               {todoItems.map((doc) => {
                 return (
