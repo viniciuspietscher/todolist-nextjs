@@ -1,4 +1,3 @@
-import Link from "next/link"
 import { useState } from "react"
 import connectDB from "../lib/mongodb"
 import List from "../models/todolist"
@@ -49,6 +48,16 @@ export default function Home({ lists, items }) {
   const [todoLists, setTodoLists] = useState(lists)
   const [todoItems, setTodoItems] = useState(items)
   const [selectedList, setSelectedList] = useState(lists[0])
+
+  const handleSelectedList = async (listId) => {
+    await axios
+      .get(`/api/todoItem/getItems/${listId}`)
+      .then((response) => {
+        setTodoItems(response.data.items)
+        setSelectedList(todoLists.find((elem) => elem._id === listId))
+      })
+      .catch((error) => console.log(error))
+  }
 
   const handleAddTodoItem = async (e) => {
     e.preventDefault()
@@ -103,7 +112,7 @@ export default function Home({ lists, items }) {
             NextJS Todo List
           </h1>
         </div>
-        <div className='basis-2/3 border-2 border-red-500/100'>02</div>
+        <div className='basis-2/3 border-2 border-red-500/100'></div>
       </div>
       <div className='flex flex-row'>
         <div className='basis-1/3 border-2 border-green-500/100'>
@@ -144,7 +153,8 @@ export default function Home({ lists, items }) {
             {todoLists.map((doc) => {
               return (
                 <li
-                  className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 text-center'
+                  className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 text-center cursor-pointer'
+                  onClick={() => handleSelectedList(doc._id)}
                   key={doc._id}
                 >
                   {doc.name}
