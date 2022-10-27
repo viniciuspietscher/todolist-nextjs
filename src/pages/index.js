@@ -105,7 +105,6 @@ export default function Home({ lists, items }) {
   }
 
   const handleComplete = async (itemId, listId) => {
-    console.log("Complete Item", itemId)
     await axios
       .put(`/api/todoItem/updateItem/${itemId}`)
       .then((response) => getItems(listId))
@@ -183,13 +182,13 @@ export default function Home({ lists, items }) {
           </ul>
         </div>
         <div className='flex justify-center basis-2/3 border-2 border-white-500/100'>
-          <div className='border-2 border-green-500/100'>
+          <div className='min-w-96 border-2 border-green-500/100'>
             {selectedList ? (
               <form
-                className='flex flex-row items-center'
+                className='flex items-center justify-between mb-4'
                 onSubmit={handleAddTodoItem}
               >
-                <div className='mx-auto'>
+                <div>
                   <label className='text-gray-100' htmlFor='name'>
                     New Item:
                   </label>
@@ -203,7 +202,7 @@ export default function Home({ lists, items }) {
                   />
                 </div>
                 <button
-                  className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+                  className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2'
                   type='submit'
                 >
                   Add
@@ -215,25 +214,31 @@ export default function Home({ lists, items }) {
             <ul>
               {todoItems.map((doc) => {
                 return (
-                  <li className='text-gray-100' key={doc._id}>
-                    {doc.item}{" "}
-                    <button
-                      className='bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded'
-                      onClick={() => handleComplete(doc._id, doc.listId)}
-                    >
-                      complete
-                    </button>
-                    <button
-                      className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
-                      onClick={() => handleDelete(doc._id, doc.listId)}
-                    >
-                      Delete
-                    </button>
+                  <li
+                    className={`${
+                      doc.completed ? "line-through" : ""
+                    } text-gray-100 flex justify-between items-center`}
+                    key={doc._id}
+                  >
+                    {doc.item}
+                    <div>
+                      <button
+                        className='bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded ml-2'
+                        onClick={() => handleComplete(doc._id, doc.listId)}
+                      >
+                        {doc.completed ? "Not done" : "Done"}
+                      </button>
+                      <button
+                        className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-2 mb-2'
+                        onClick={() => handleDelete(doc._id, doc.listId)}
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </li>
                 )
               })}
             </ul>
-            <h2 className='text-gray-100 text-lg'>Completed</h2>
           </div>
         </div>
       </div>
