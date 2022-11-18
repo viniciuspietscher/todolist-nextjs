@@ -217,8 +217,10 @@ export default function Home({ lists, items }) {
                 return (
                   <li
                     className={`${
-                      doc.completed ? "line-through" : ""
-                    } text-gray-100 flex justify-between items-center`}
+                      doc.completed
+                        ? "line-through text-gray-400 decoration-wavy decoration-indigo-500"
+                        : "text-gray-100"
+                    } flex justify-between items-center`}
                     key={doc._id}
                   >
                     {doc.item}

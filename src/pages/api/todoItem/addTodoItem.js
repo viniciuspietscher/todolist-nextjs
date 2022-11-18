@@ -10,7 +10,7 @@ export default async function addTodoItem(req, res) {
   try {
     await connectDB()
     const item = await Item.create(req.body)
-    res.status(200).json({ item })
+    res.status(201).json({ item })
   } catch (error) {
     console.log(error)
     res.status(400).json({ error: error.message })

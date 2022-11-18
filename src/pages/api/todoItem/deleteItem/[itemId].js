@@ -10,9 +10,12 @@ export default async function deleteTodoItem(req, res) {
       res.status(400).json({ msg: "Item does not exists" })
       return
     }
-    await Item.findByIdAndUpdate(itemId, { deleted: true })
-    const deletedItem = await Item.findById(itemId)
-    res.status(200).json({ deletedItem })
+    const update = await Item.findByIdAndUpdate(
+      itemId,
+      { deleted: true },
+      { returnDocument: "after" }
+    )
+    res.status(200).json({ update })
   } catch (error) {
     res.status(400).json({ error })
   }
