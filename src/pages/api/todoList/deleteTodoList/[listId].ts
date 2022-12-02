@@ -1,7 +1,11 @@
 import connectDB from "../../../../lib/mongodb"
 import List from "../../../../models/todolist"
+import { NextApiRequest, NextApiResponse } from "next"
 
-export default async function deleteTodoList(req, res) {
+export default async function deleteTodoList(
+  req: NextApiRequest,
+  res: NextApiResponse
+): Promise<void> {
   const { listId } = req.query
   try {
     await connectDB()

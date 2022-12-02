@@ -1,7 +1,8 @@
 import connectDB from "../../../lib/mongodb"
 import List from "../../../models/todolist"
+import { NextApiRequest, NextApiResponse } from "next"
 
-export default async function addTodoList(req, res) {
+export default async function addTodoList(req: NextApiRequest, res: NextApiResponse) {
   const { name } = req.body
   if (!name) {
     res.status(400).json({ msg: "Please provide a Todo List name" })
@@ -11,9 +12,7 @@ export default async function addTodoList(req, res) {
     await connectDB()
     const listExists = await List.findOne(req.body)
     if (listExists) {
-      res
-        .status(400)
-        .json({ msg: "Todo List already exists, provide a different name" })
+      res.status(400).json({ msg: "Todo List already exists, provide a different name" })
       return
     }
     const list = await List.create(req.body)

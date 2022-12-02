@@ -1,7 +1,8 @@
 import connectDB from "../../../../lib/mongodb"
 import Item from "../../../../models/todoitem"
+import { NextApiRequest, NextApiResponse } from "next"
 
-export default async function deleteTodoItem(req, res) {
+export default async function deleteTodoItem(req: NextApiRequest, res: NextApiResponse) {
   const { itemId } = req.query
   try {
     await connectDB()

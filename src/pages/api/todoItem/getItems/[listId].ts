@@ -1,8 +1,9 @@
 import connectDB from "../../../../lib/mongodb"
 import Item from "../../../../models/todoitem"
 import List from "../../../../models/todolist"
+import { NextApiRequest, NextApiResponse } from "next"
 
-export default async function getTodoItems(req, res) {
+export default async function getTodoItems(req: NextApiRequest, res: NextApiResponse) {
   const { listId } = req.query
   try {
     await connectDB()
