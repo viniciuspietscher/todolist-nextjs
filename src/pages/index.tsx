@@ -52,7 +52,9 @@ export const getServerSideProps: GetServerSideProps = async (): Promise<Props> =
       },
     }
   } catch (error) {
-    throw error
+    return {
+      notFound: true,
+    }
   }
 }
 
