@@ -5,7 +5,7 @@ import connectDB from "../lib/mongodb"
 import List from "../models/todolist"
 import Item from "../models/todoitem"
 import axios from "axios"
-import { ITodoItem, ITodoList } from "../lib/types"
+import { ITodoItem, ITodoList, InotFound } from "../lib/types"
 import Head from "next/head"
 
 type Props = {
@@ -18,8 +18,9 @@ type Props = {
 type ITodoListString = ITodoList<string>
 type ITodoItemString = ITodoItem<string>
 
-export const getServerSideProps: GetServerSideProps = async (): Promise<Props> => {
+export const getServerSideProps: GetServerSideProps = async (): Promise<Props | InotFound> => {
   try {
+    console.log(process.env.MONGODB_URI2)
     await connectDB()
     const result = await List.find({ deleted: false }).sort({ _id: "desc" })
     if (result.length == 0) {
@@ -66,15 +67,17 @@ export default function Home({
   const [newTodoItem, setNewTodoItem] = useState("")
   const [todoLists, setTodoLists] = useState<ITodoListString[]>(lists)
   const [todoItems, setTodoItems] = useState<ITodoItemString[]>(items)
-  const [selectedList, setSelectedList] = useState(lists[0])
-  // const [selectedList, setSelectedList] = useState<ITodoListString>(lists[0])
+  // const [selectedList, setSelectedList] = useState(lists[0])
+  const [selectedList, setSelectedList] = useState<ITodoListString>(
+    lists.length > 0 ? lists[0] : ""
+  )
 
   const handleSelectedList = async (listId: string): Promise<void> => {
     await axios
       .get(`/api/todoItem/getItems/${listId}`)
       .then((response) => {
         setTodoItems(response.data.items)
-        setSelectedList(todoLists.find((elem: ITodoListString) => elem._id === listId))
+        setSelectedList(todoLists.find((elem: ITodoListString) => elem._id === listId)!)
       })
       .catch((error) => console.log(error))
   }

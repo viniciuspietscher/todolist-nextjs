@@ -1,3 +1,7 @@
+/**
+ * @jest-environment node
+ */
+
 import { MongoMemoryServer } from "mongodb-memory-server"
 import List from "../../src/models/todolist"
 import { MongoClient } from "mongodb"
@@ -34,12 +38,12 @@ afterAll(async () => {
 })
 
 describe("test home getServerSideProps", () => {
-  it("throws an error", async () => {
+  it.only("throws an error", async () => {
     connectDB.mockImplementationOnce(async () => {
       throw new Error("error thrown")
     })
     const result = await getServerSideProps()
-    // console.log(result)
+    console.log(result)
     expect(result.props).toBeUndefined()
     expect(result.notFound).toBeDefined()
     expect(result.notFound).toBeTruthy()
@@ -51,12 +55,16 @@ describe("test home getServerSideProps", () => {
     expect(expectedData).toEqual(result)
   })
 
-  // it("returns proper props", async () => {
-  //   const data = [{ name: "List 1" }, { name: "List 2" }, { name: "List 3" }]
-  //   const db = conn.db(mongod.instanceInfo.dbName)
-  //   const res = await db.collection("lists").insertMany(data)
-  //   console.log(res)
-  //   const result2 = await getServerSideProps()
-  //   console.log(result2)
-  // })
+  it("returns proper props", async () => {
+    const data = [
+      { name: "List 1", deleted: false },
+      { name: "List 2", deleted: false },
+      { name: "List 3", deleted: false },
+    ]
+    const db = conn.db(mongod.instanceInfo.dbName)
+    const res = await db.collection("lists").insertMany(data)
+    console.log(res)
+    const result2 = await getServerSideProps()
+    console.log(result2)
+  })
 })
